@@ -9,9 +9,10 @@ int main(void);
 int main(void)
 {
 	pid_t pid;
-	size_t token_count, input_size = 0;
-	char **tokens;
-	char *input = NULL, *delim = " \n";
+	ssize_t nread = 0;
+	size_t input_size = 0;
+	char *input = NULL;
+	char **param = NULL;
 
 	while (1)
 	{
@@ -19,40 +20,39 @@ int main(void)
 		printf("$ ");
 		fflush(stdout);
 		/* Read input using getline */
-		if (getline(&input, &input_size, stdin) == -1)
+		nread = getline(&input, &input_size, stdin);
+		if (nread == -1)
 		{
 			printf("\n");
 			break;
 		} /* Parse input */
-		token_count = tokenize(input, delim);
-		tokens = word_list(input, delim);
-		if (token_count == 0)
-			continue;  /* Empty input, prompt again */
-		if (strcmp(tokens[0], "exit") == 0) /* Handle built-in */
-			break;
-		else if (strcmp(tokens[0], "cd") == 0)
+		else
+			input[nread - 1] = '\0'; /* replace \n*/
+		param = malloc(sizeof(char *) * 2);
+		if (param == NULL)
 		{
-			if (token_count < 2)
-				fprintf(stderr, "cd: missing argument\n");
-			else
-			{
-				if (chdir(tokens[1]) != 0)
-					perror("cd");
-			}
-			continue;
+			perror("malloc");
+			exit(EXIT_FAILURE);
 		}
+		param[0] = input;
+		param[1] = NULL;
+		printf("param: %s\n", param[0]);
+		printf("input: %s\n", input);
 		pid = fork(); /* Execusion start */
 		if (pid == 0) /*Child process*/
 		{
-			execvp(tokens[0], tokens);
+			execve(param[0], param, NULL);
 			perror("execvp");  /* execvp failed */
 			exit(EXIT_FAILURE);
 		}
 		else if (pid < 0)
 			perror("fork"); /*Error forking*/
 		else
+		{
 			wait(NULL);  /* Parent wait for child to complete */
+			free(param);
+		}
+		free(input);
 	}
-	free(input); /* Free memory allocated by getline */
 	return (0);
 }
