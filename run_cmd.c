@@ -1,14 +1,15 @@
 #include "shell.h"
 
 /**
- * run_cmd - function that runs the command entered in propmt
- * @cmd: the command entered in the prompt
+ * run_cmd - function that runs the command
+ * @cmd_vec: array of tokens containing command and args
  *
  * Return: nothing
  */
-void run_cmd(char *cmd)
+void run_cmd(char **cmd_vec)
 {
 	pid_t child_pid = fork();
+	int status;
 
 	if (child_pid == -1)
 	{
@@ -17,12 +18,14 @@ void run_cmd(char *cmd)
 	}
 	else if (child_pid == 0)
 	{
-		execve(cmd, cmd, NULL);
+		execve(cmd_vec[0], cmd_vec, NULL);
 		perror("execve");
 		exit(EXIT_FAILURE);
 	}
 	else
 	{
-		wait(NULL);
+		waitpid(child_pid, &status, 0);
+		if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
+			perror("cmd_vec[0]");
 	}
 }

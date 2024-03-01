@@ -2,27 +2,21 @@
 
 /**
  * tokenize_input - funtion that tokenize input
- * input: receive input
- * Return: NULL
+ * @input: input string
+ * Return: array of tokens
  */
 
-char tokenize_input(char *input)
+char **tokenize_input(char *input)
 {
-	char param = NULL;
-	char *token = strtok(input, "");
-	int arg_count = 0;
+	char **cmd_vec = NULL;
 
-	while (token != NULL)
+	cmd_vec = malloc(sizeof(char *) * 2);
+	if (cmd_vec == NULL)
 	{
-		param = realloc(param, (arg_count + 2) * sizeof(char *));
-		if (param == NULL)
-		{
-			perror("realloc");
-			exit(EXIT_FAILURE);
-		}
-		param[arg_count++] = token;
-		token = strtok(NULL, "");
+		perror("malloc");
+		exit(EXIT_FAILURE);
 	}
-	param[arg_count] = NULL;
-	return (param);
+	cmd_vec[0] = input;
+	cmd_vec[1] = NULL;
+	return (cmd_vec);
 }

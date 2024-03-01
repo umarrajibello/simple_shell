@@ -7,7 +7,7 @@
 int main(void)
 {
 	char *input;
-	char **param;
+	char **cmd_vec;
 
 	while (1)
 	{
@@ -17,10 +17,10 @@ int main(void)
 		{
 			break; /*end of file*/
 		}
-		param = tokenizeInput(input);
-		run_cmd(param);
+		cmd_vec = tokenize_input(input);
+		run_cmd(cmd_vec);
 		free(input);
-		free(param);
+		free(cmd_vec);
 	}
 	return (0);
 }

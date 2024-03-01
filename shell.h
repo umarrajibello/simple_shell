@@ -11,8 +11,8 @@ extern char environ;
 void prompt(void);
 char *r_input(void);
 void read_command(char param);
-void run_cmd(char *cmd);
-char tokenize_input(char *input);
+void run_cmd(char **cmd_vec);
+char **tokenize_input(char *input);
 
 
 #endif /*SHELL_H*/
