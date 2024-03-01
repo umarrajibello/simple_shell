@@ -9,9 +9,10 @@
 extern char environ;
 
 void prompt(void);
+char *r_input(void);
 void read_command(char param);
 void run_cmd(char *cmd);
 char tokenize_input(char *input);
-char *rec_cmd(void);
+
 
 #endif /*SHELL_H*/

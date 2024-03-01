@@ -11,14 +11,14 @@ int main(void)
 
 	while (1)
 	{
-		displayPrompt();
-		input = receiveInput();
+		prompt(); /* display prompt*/
+		input = r_input(); /*store input as null terminated string*/
 		if (input == NULL)
 		{
 			break; /*end of file*/
 		}
 		param = tokenizeInput(input);
-		runCommand(param);
+		run_cmd(param);
 		free(input);
 		free(param);
 	}

@@ -1,10 +1,11 @@
 #include "shell.h"
 /**
- * receive_command - funct that receive command
- * Return: input command received
+ * r_input - funct receive input from user
+ *
+ * Return: input received
  */
 
-char *rec_cmd(void)
+char *r_input(void)
 {
 	char *input = NULL;
 	size_t input_size = 0;
