@@ -21,10 +21,15 @@ int main(void)
 		fflush(stdout);
 		/* Read input using getline */
 		nread = getline(&input, &input_size, stdin);
-		if (nread == -1)
+		if (nread <= 0)
 		{
-			printf("\n");
-			break;
+			if (nread == 0)
+			{
+				printf("\n");
+				break;
+			}
+			perror("getline");
+			exit(EXIT_FAILURE);
 		} /* Parse input */
 		else
 			input[nread - 1] = '\0'; /* replace \n*/
