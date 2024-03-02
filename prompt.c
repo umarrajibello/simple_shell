@@ -1,11 +1,15 @@
 #include "shell.h"
 
 /**
- * prompt - funtion that display prompt
- * Return: nothing
+ * promptt - prints $ for prompt
+ * Return: void
  */
-void prompt(void)
+
+void promptt(void)
 {
-	printf("$ ");
-	fflush(stdout);
+	if (isatty(STDIN_FILENO))
+	{
+		write(1, "$ ", 3);
+	}
+
 }
